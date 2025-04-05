@@ -1,28 +1,31 @@
-package com.example.FakeApi;
+package com.example.FakeApi.controllers;
 
+
+import com.example.FakeApi.models.People;
+import com.example.FakeApi.services.FakerGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/people")
 public class PeopleController {
 
-    private final FakerGenerater fakerGenerater;
+    private final FakerGenerator fakerGenerator;
 
-    public PeopleController(FakerGenerater fakerGenerater) {
-        this.fakerGenerater = fakerGenerater;
+    public PeopleController(FakerGenerator fakerGenerator) {
+        this.fakerGenerator = fakerGenerator;
     }
 
     @GetMapping
     public List<People> getPeople() {
-        return fakerGenerater.getPeopleData();
+        return fakerGenerator.generateData();
     }
 
     @GetMapping("/new")
     public List<People> generateNewPeople() {
-        return fakerGenerater.generateNewData();
+        return fakerGenerator.generateNewData();
     }
 }

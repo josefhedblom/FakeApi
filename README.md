@@ -81,60 +81,73 @@ String email) { }
 
 Skapa en ny fil `FakerGenerator.java` i `services`-paketet:
 
-```java package com.example.fakeapi.services;
+```java package com.example.FakeApi.services;
 
-import com.example.fakeapi.models.People; import net.datafaker.Faker;
-import org.springframework.stereotype.Service;
+@Component
+public class FakerGenerator {
 
-import java.util.ArrayList; import java.util.List;
+  private List<People> cachedPeopleData = null;
 
-@Service public class FakerGenerator {
+  public List<People> generateData() {
+    if (cachedPeopleData == null) {
+      Faker faker = new Faker();
+      List<People> peopleData = new ArrayList<>();
 
-    public List<People> generateData() { Faker faker = new Faker();
+      for (int i = 0; i < 100; i++) {
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String fullName = firstName + " " + lastName;
+        String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@example.com";
+        peopleData.add(new People(firstName, lastName, fullName, email));
+      }
+
+      cachedPeopleData = peopleData;
+    }
+    return cachedPeopleData;
+  }
+
+  public List<People> generateNewData() {
+    Faker faker = new Faker();
     List<People> peopleData = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) { String firstName =
-        faker.name().firstName(); String lastName =
-        faker.name().lastName(); String fullName = firstName + " " +
-        lastName; String email = firstName.toLowerCase() + "." +
-        lastName.toLowerCase() + "@example.com"; peopleData.add(new
-        People(firstName, lastName, fullName, email)); }
-
-        return peopleData; } } 
+    for (int i = 0; i < 100; i++) {
+      String firstName = faker.name().firstName();
+      String lastName = faker.name().lastName();
+      String fullName = firstName + " " + lastName;
+      String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@example.com";
+      peopleData.add(new People(firstName, lastName, fullName, email));
+    }
+    return peopleData;
+  }
+}
 ```
 
 ### Steg 3: Skapa en controller
 
 Skapa en ny fil `PeopleController.java` i `controllers`-paketet:
 
-```java package com.example.fakeapi.controllers;
+```java package com.example.FakerApi.controllers;
+@RestController
+@RequestMapping("/api/people")
+public class PeopleController {
 
-import com.example.fakeapi.models.People; import
-com.example.fakeapi.services.FakerGenerator; import
-org.springframework.web.bind.annotation.GetMapping; import
-org.springframework.web.bind.annotation.RequestMapping; import
-org.springframework.web.bind.annotation.RestController;
+  private final FakerGenerator fakerGenerator;
 
-import java.util.List;
+  public PeopleController(FakerGenerator fakerGenerator) {
+    this.fakerGenerator = fakerGenerator;
+  }
 
-@RestController @RequestMapping("/api/people") public class
-PeopleController {
+  @GetMapping
+  public List<People> getPeople() {
+    return fakerGenerator.generateData();
+  }
 
-    private final FakerGenerator fakerGenerator;
-
-    public PeopleController(FakerGenerator fakerGenerator) {
-        this.fakerGenerator = fakerGenerator;
-    }
-
-    @GetMapping
-    public List<People> getPeople() {
-        return fakerGenerator.generateData();  // Returnerar genererad data }
-
-        @GetMapping("/new") public List<People> generateNewPeople () {
-            return fakerGenerator.generateData();  // Skapar och returnerar ny data vid anrop
-        }
-    }
+  @GetMapping("/new")
+  public List<People> generateNewPeople() {
+    return fakerGenerator.generateNewData();
+  }
 }
+
 ```
 
 ## 6. Testa API:t
@@ -150,11 +163,11 @@ För att starta servern, kör kommandot:
 För att hämta den genererade datan via `/api/people` kan du använda
 följande kommando:
 
-```bash curl -X GET http://localhost:8080/api/people ```
+```bash curl -X GET http://localhost:3050/api/people ```
 
 För att generera ny data vid varje anrop, använd `/api/people/new`:
 
-```bash curl -X GET http://localhost:8080/api/people/new ```
+```bash curl -X GET http://localhost:3050/api/people/new ```
 
 ## 7. Sammanfattning
 

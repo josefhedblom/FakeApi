@@ -158,15 +158,16 @@ För att generera ny data vid varje anrop, använd `/api/people/new`:
 
 ## 7. Sammanfattning
 
-Grattis! 🎉 Du har nu skapat ett enkelt REST API i Spring Boot som
+Grattis! Du har nu skapat ett enkelt REST API i Spring Boot som
 använder FakerData-biblioteket för att generera slumpmässig data. Vi har
 gått igenom:
 
-- ✅ Skapa ett Spring Boot-projekt - ✅ Lägg till beroenden för att
-använda FakerData - ✅ Skapa en REST-controller som genererar och
-returnerar data - ✅ Testa API:t via cURL eller webbläsare
+- Skapa ett Spring Boot-projekt
+- Lägg till beroenden för att använda FakerData
+- Skapa en REST-controller som genererar och returnerar data
+- Testa API:t via cURL eller webbläsare
 
-### Nästa steg? 🚀
+### Nästa steg?
 
-- Lägg till databas-stöd för att spara genererad data. - Implementera
-validering och autentisering för mer avancerade funktioner.
+- Lägg till databas-stöd för att spara genererad data.
+- Implementera validering och autentisering för mer avancerade funktioner.

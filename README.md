@@ -1,39 +1,21 @@
 # Bygg ett REST API i Spring Boot för att generera slumpmässig data
 
 Att bygga ett REST API i Spring Boot som genererar slumpmässig fake data
-kan vara både roligt och lärorikt. I denna artikel kommer vi att skapa
+kan vara både roligt och lärorikt. I denna artikel beskriver jag hur jag har skapat
 ett API som gör just det genom att använda FakerData-biblioteket för att
-generera falska användardata som namn, e-post och ålder. API:t är
-utformat för att både låta dig själv testa API-anrop och ge andra
-möjlighet att öva på att göra API-anrop utan att behöva använda en
-webbplats med komplicerad dokumentation.
+generera falska användardata som namn och e-post. API:t är utvecklat för att låta 
+nya utvecklare kunna öva på API-anrop med realistisk men slumpmässig data utan att behöva skapa 
+en egen databas eller använda externa tjänster med komplicerad dokumentation.
 
-## 1. Introduktion
+## Teknologier kommer som har används
 
-I denna guide kommer vi att skapa ett Spring Boot API som:
+För att bygga detta API har jag användt följande teknologier och bibliotek:
 
-- Genererar och returnerar fake data varje gång en GET-request görs. -
-  Skapar ny fake data varje gång en ny GET-request görs via en särskild
-  endpoint.
+- **Java 17+**
+- **Spring Boot**
+- **Faker**
 
-Syftet med detta API är att ge utvecklare och testare möjlighet att öva
-på API-anrop och få tillgång till realistiska men slumpmässiga data utan
-att behöva skapa en egen databas eller använda externa tjänster med
-komplicerad dokumentation.
-
-## 2. Teknologier vi kommer att använda
-
-För att bygga detta API använder vi följande teknologier och bibliotek:
-
-- **Java 17+** – Programmeringsspråket vi använder för backend. -
-  **Spring Boot** – Ramverk för att snabbt skapa webbtjänster. - **Faker**
-  – Bibliotek som genererar slumpmässig fake data. - **Maven** –
-  Byggverktyg för att hantera beroenden.
-
-## 3. Projektstruktur
-
-När vi har satt upp vårt Spring Boot-projekt kommer det att ha följande
-struktur:
+## Projektstruktur
 
 ```plaintext 
 fake-api-project/
@@ -51,25 +33,11 @@ fake-api-project/
 ├── pom.xml
 ```
 
-## 4. Sätta upp projektet
+## Skapa REST API:t
 
-### Steg 1: Skapa ett Spring Boot-projekt
+### Skapa en modell för People
 
-Det enklaste sättet att skapa ett nytt Spring Boot-projekt är via Spring
-Initializr.
-
-Välj följande beroenden:
-
-- **Spring Web** (för att skapa REST API:t)
-
-Ladda ner projektet, extrahera det och öppna det i din IDE (t.ex.
-IntelliJ IDEA eller VS Code).
-
-## 5. Skapa REST API:t
-
-### Steg 1: Skapa en modell för People
-
-Skapa en ny fil `People.java` i `models`-paketet:
+`People.java` i `models`
 
 ```java package com.example.fakeapi.models;
 
@@ -77,9 +45,9 @@ public record People(String firstName, String lastName, String fullName,
 String email) { } 
 ```
 
-### Steg 2: Skapa en FakerGenerator för att generera data
+### Skapa en FakerGenerator för att generera data
 
-Skapa en ny fil `FakerGenerator.java` i `services`-paketet:
+`FakerGenerator.java` i `services`
 
 ```java package com.example.FakeApi.services;
 
@@ -122,9 +90,9 @@ public class FakerGenerator {
 }
 ```
 
-### Steg 3: Skapa en controller
+### Skapa en controller
 
-Skapa en ny fil `PeopleController.java` i `controllers`-paketet:
+`PeopleController.java` i `controllers`
 
 ```java package com.example.FakerApi.controllers;
 @RestController
@@ -150,7 +118,7 @@ public class PeopleController {
 
 ```
 
-## 6. Testa API:t
+## Testa API:t
 
 ### Starta servern
 
@@ -168,19 +136,3 @@ följande kommando:
 För att generera ny data vid varje anrop, använd `/api/people/new`:
 
 ```bash curl -X GET http://localhost:3050/api/people/new ```
-
-## 7. Sammanfattning
-
-Grattis! Du har nu skapat ett enkelt REST API i Spring Boot som
-använder FakerData-biblioteket för att generera slumpmässig data. Vi har
-gått igenom:
-
-- Skapa ett Spring Boot-projekt
-- Lägg till beroenden för att använda FakerData
-- Skapa en REST-controller som genererar och returnerar data
-- Testa API:t via cURL eller webbläsare
-
-### Nästa steg?
-
-- Lägg till databas-stöd för att spara genererad data.
-- Implementera validering och autentisering för mer avancerade funktioner.
